@@ -390,6 +390,29 @@ app.post('/products/:id/delete', isLoggedIn, (req, res) => {
         }
     );
 });
+app.post('/admin/products/:id/approve', isAdmin, (req, res) => {
+    db.query(
+        `UPDATE products SET status = IF(quantity > 0, 'approved', 'sold_out'),
+         rejection_reason = NULL WHERE id = ?`,
+        [req.params.id],
+        (error) => {
+            if (error) return handleDatabaseError(res, 'Approve product', error);
+            req.flash('success', 'Product approved.');
+            res.redirect('/admin/products');
+        }
+    );
+});
+app.post('/admin/products/:id/reject', isAdmin, (req, res) => {
+    db.query(
+        `UPDATE products SET status = 'rejected', rejection_reason = ? WHERE id = ?`,
+        [(req.body.reason || 'Product does not meet marketplace requirements.').trim(), req.params.id],
+        (error) => {
+            if (error) return handleDatabaseError(res, 'Reject product', error);
+            req.flash('success', 'Product rejected.');
+            res.redirect('/admin/products');
+        }
+    );
+});
 
 // ==================== Authentication and profiles - Hein Thu Nyi Nyi ====================
 app.get('/register', isGuest, (req, res) => {
@@ -1108,29 +1131,6 @@ app.get('/admin/products', isAdmin, (req, res) => {
         (error, products) => {
             if (error) return handleDatabaseError(res, 'Admin products', error);
             res.render('admin/products', { products });
-        }
-    );
-});
-app.post('/admin/products/:id/approve', isAdmin, (req, res) => {
-    db.query(
-        `UPDATE products SET status = IF(quantity > 0, 'approved', 'sold_out'),
-         rejection_reason = NULL WHERE id = ?`,
-        [req.params.id],
-        (error) => {
-            if (error) return handleDatabaseError(res, 'Approve product', error);
-            req.flash('success', 'Product approved.');
-            res.redirect('/admin/products');
-        }
-    );
-});
-app.post('/admin/products/:id/reject', isAdmin, (req, res) => {
-    db.query(
-        `UPDATE products SET status = 'rejected', rejection_reason = ? WHERE id = ?`,
-        [(req.body.reason || 'Product does not meet marketplace requirements.').trim(), req.params.id],
-        (error) => {
-            if (error) return handleDatabaseError(res, 'Reject product', error);
-            req.flash('success', 'Product rejected.');
-            res.redirect('/admin/products');
         }
     );
 });
