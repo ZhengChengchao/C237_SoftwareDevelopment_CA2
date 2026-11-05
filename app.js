@@ -36,13 +36,13 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }
 }));
 app.use(flash());
-// const uploadFolder = path.join('/tmp', 'uploads');
-// if (!fs.existsSync(uploadFolder)) {
-//     fs.mkdirSync(uploadFolder, { recursive: true });
-// }
+const uploadFolder = path.join('/tmp', 'uploads');
+if (!fs.existsSync(uploadFolder)) {
+    fs.mkdirSync(uploadFolder, { recursive: true });
+}
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, "/public/uploads");
+        callback(null, uploadFolder);
     },
     filename: (req, file, callback) => {
         const safeName = Date.now() + '-' + file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
