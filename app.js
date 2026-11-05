@@ -42,7 +42,7 @@ app.use(flash());
 // }
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, "./public/uploads");
+        callback(null, "/public/uploads");
     },
     filename: (req, file, callback) => {
         const safeName = Date.now() + '-' + file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
