@@ -36,7 +36,7 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }
 }));
 app.use(flash());
-const uploadFolder = path.join(__dirname, 'public', 'uploads');
+const uploadFolder = path.join('/tmp', 'uploads');
 if (!fs.existsSync(uploadFolder)) {
     fs.mkdirSync(uploadFolder, { recursive: true });
 }
