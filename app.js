@@ -241,7 +241,16 @@ app.get('/', (req, res) => {
              WHERE status = 'approved' ORDER BY category`,
             (categoryError, categories) => {
                 if (categoryError) return handleDatabaseError(res, 'Browse categories', categoryError);
-                res.render('index', { products, categories, search, category, sort });
+                const visibleProducts = req.session.user
+                    ? products
+                    : products.map(({ seller_name, ...product }) => product);
+                res.render('index', {
+                    products: visibleProducts,
+                    categories,
+                    search,
+                    category,
+                    sort
+                });
             }
         );
     });
@@ -269,7 +278,10 @@ app.get('/products/:id(\\d+)', (req, res) => {
                            WHERE ra.product_id = ? ORDER BY ra.created_at DESC`;
         db.query(reviewSql, [req.params.id], (reviewError, reviews) => {
             if (reviewError) return handleDatabaseError(res, 'Product reviews', reviewError);
-            res.render('product/details', { product, reviews });
+            const visibleProduct = req.session.user
+                ? product
+                : { ...product, seller_name: null, seller_phone: null };
+            res.render('product/details', { product: visibleProduct, reviews });
         });
     });
 });
@@ -512,7 +524,10 @@ app.get('/users/:id', (req, res) => {
             [req.params.id],
             (productError, products) => {
                 if (productError) return handleDatabaseError(res, 'Public products', productError);
-                res.render('public-profile', { profileUser: users[0], products });
+                const profileUser = req.session.user
+                    ? users[0]
+                    : { ...users[0], name: null };
+                res.render('public-profile', { profileUser, products });
             }
         );
     });

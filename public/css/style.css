@@ -366,6 +366,10 @@ a {
     border-bottom: 1px solid var(--cc-border);
 }
 
+.product-facts-guest {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .product-facts > div {
     padding: 1rem 0.75rem;
 }

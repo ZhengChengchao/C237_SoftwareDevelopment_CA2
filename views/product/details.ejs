@@ -23,15 +23,17 @@
                     <p class="product-description"><%= product.description %></p>
                     <p class="detail-price">$<%= Number(product.price).toFixed(2) %></p>
 
-                    <div class="product-facts mb-4">
+                    <div class="product-facts <%= currentUser ? '' : 'product-facts-guest' %> mb-4">
                         <div>
                             <span class="fact-label">Available</span>
                             <strong><%= product.quantity %> item<%= Number(product.quantity) === 1 ? '' : 's' %></strong>
                         </div>
-                        <div>
-                            <span class="fact-label">Seller</span>
-                            <strong><a href="/users/<%= product.seller_id %>"><%= product.seller_name %></a></strong>
-                        </div>
+                        <% if (currentUser) { %>
+                            <div>
+                                <span class="fact-label">Seller</span>
+                                <strong><a href="/users/<%= product.seller_id %>"><%= product.seller_name %></a></strong>
+                            </div>
+                        <% } %>
                         <div>
                             <span class="fact-label">Seller rating</span>
                             <strong><span class="rating-star">★</span> <%= Number(product.average_rating).toFixed(1) %></strong>
