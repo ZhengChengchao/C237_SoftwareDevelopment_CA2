@@ -10,32 +10,45 @@ body {
     min-height: calc(100vh - 140px);
 }
 
+/* Product images on marketplace cards */
 .product-image {
-    height: 220px;
-    object-fit: cover;
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  object-position: center;
+  background-color: #f5faf6;
+  padding: 12px;
 }
 
+/* Placeholder when no product image is available */
 .product-placeholder {
-    height: 220px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #d8efdc;
-    color: #226b37;
-    font-size: 3rem;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #d8efdc;
+  color: #226b37;
+  font-size: 3rem;
 }
 
+/* Larger image on product details page */
 .detail-image {
-    width: 100%;
-    max-height: 420px;
-    object-fit: cover;
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  object-position: center;
+  background-color: #f5faf6;
+  padding: 16px;
 }
 
+/* Keep rating images unchanged */
 .rating-image {
-    width: auto;
-    max-width: 100%;
-    max-height: 280px;
-    object-fit: cover;
+  width: auto;
+  max-width: 100%;
+  max-height: 280px;
+  object-fit: cover;
 }
 
 .table td,
